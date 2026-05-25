@@ -36,6 +36,7 @@ export type UtilsDialogOptions = {
   closeOnMask?: boolean
   closeOnSelect?: boolean
   className?: string
+  onClose?: () => void
 }
 
 const STYLE_ID = 'utils-dialog-style'
@@ -163,9 +164,11 @@ export const showUtilsDialog = <T extends UtilsDialogItem>(
   let app: App<Element> | null = null
 
   const close = () => {
+    if (!app) return
     app?.unmount()
     app = null
     host.remove()
+    options.onClose?.()
   }
 
   const Dialog = defineComponent({
